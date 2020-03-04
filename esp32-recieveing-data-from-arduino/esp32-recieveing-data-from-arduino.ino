@@ -28,8 +28,8 @@ void setup() {
     Serial.begin(9600);
     
     MySerial.begin(9600, SERIAL_8N1, 14, 12); //RX, TX
-//    port.begin(9600,SERIAL_8N1, 16, 17);
-//    my_sds.begin(&port);
+    port.begin(9600,SERIAL_8N1, 16, 17);
+    my_sds.begin(&port);
     
     Serial.println("HTU21D test");
     myHumidity.begin(); 
@@ -46,11 +46,11 @@ void setup() {
 
 void loop() {
 //  CJMCU 6814 -SENSOR 
+  Serial.println("============START============="); 
   if(MySerial.available() > 0) {
        
        dataSent = MySerial.readString();
-       MySerial.write(0);
-       
+      
        int index1 = dataSent.indexOf(';');
        CO_level = dataSent.substring(0, index1).toFloat();
        
@@ -69,17 +69,15 @@ void loop() {
 
       
     }
-    delay(100);
 
-// SDS011 sensor
-//    err = my_sds.read(&p25, &p10);
-//    if (!err) {
-//      Serial.print("P2.5: " + String(p25) + "  ");
-//      Serial.println("P10:  " + String(p10));
-//    }
-//  
-    delay(100);
-  
+//   SDS011 sensor
+      err = my_sds.read(&p25, &p10);
+      if (!err) {
+        Serial.print("P2.5: " + String(p25) + "  ");
+        Serial.println("P10:  " + String(p10));
+      }
+    
+ 
     //Temperature and Humidity sensor
   float humd = myHumidity.readHumidity();
   float temp = myHumidity.readTemperature();
@@ -91,8 +89,6 @@ void loop() {
   Serial.print(humd, 1);
   Serial.println("%");
 
-  delay(100);
-  
   //  CO2 -- VOC sensor
   if(ccs.available()){
     if(!ccs.readData()){
@@ -107,7 +103,9 @@ void loop() {
       Serial.println("ERROR!");
       while(1);
     }
-  }  
+  }
+    Serial.println("========================END===========================");  
+    MySerial.write(0);
     delay(500);
     
 }
