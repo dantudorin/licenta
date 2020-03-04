@@ -45,12 +45,15 @@ void setup() {
 }
 
 void loop() {
+
+  Serial.println("============START=============");
+
 //  CJMCU 6814 -SENSOR 
-  Serial.println("============START============="); 
+  MySerial.write(0);
+  delay(100);
   if(MySerial.available() > 0) {
        
        dataSent = MySerial.readString();
-      
        int index1 = dataSent.indexOf(';');
        CO_level = dataSent.substring(0, index1).toFloat();
        
@@ -78,7 +81,7 @@ void loop() {
       }
     
  
-    //Temperature and Humidity sensor
+//   Temperature and Humidity sensor
   float humd = myHumidity.readHumidity();
   float temp = myHumidity.readTemperature();
 
@@ -89,7 +92,7 @@ void loop() {
   Serial.print(humd, 1);
   Serial.println("%");
 
-  //  CO2 -- VOC sensor
+//  CO2 -- VOC sensor
   if(ccs.available()){
     if(!ccs.readData()){
       Serial.print("CO2: ");
@@ -104,8 +107,5 @@ void loop() {
       while(1);
     }
   }
-    Serial.println("========================END===========================");  
-    MySerial.write(0);
-    delay(500);
-    
+    Serial.println("========================END===========================");      
 }
