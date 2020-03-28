@@ -52,7 +52,7 @@ void rootPage() {
 void setup() {
   
     Serial.begin(9600);
-    delay(10000);
+    delay(5000);
     
     pinMode(RED_COL, OUTPUT);
     pinMode(BLUE_COL, OUTPUT);
@@ -60,7 +60,7 @@ void setup() {
     pinMode(buttonPin, INPUT);
 
     digitalWrite(GREEN_COL, HIGH);
-    digitalWrite(RED_COL, LOW);
+    digitalWrite(RED_COL, HIGH);
     digitalWrite(BLUE_COL, LOW);
     
     MySerial.begin(9600, SERIAL_8N1, 14, 12); //RX, TX
@@ -92,6 +92,8 @@ void setup() {
         Serial.println(cjmcuMessage);
         
       }
+      digitalWrite(GREEN_COL, HIGH);
+      digitalWrite(RED_COL, LOW);
       Server.on("/", rootPage);   
       if (Portal.begin()) {
           Serial.println("WiFi connected: " + WiFi.localIP().toString());
@@ -182,7 +184,7 @@ void loop() {
             }
         }
         
-        Serial.println(uploadToThingSpeak(CO_level,NH3_level,NO2_level,temp,p25,p10,VOC_level,CO2_level));
+        Serial.println(uploadToThingSpeak(CO_level,NH3_level,humd,temp,p25,p10,VOC_level,CO2_level));
       }
     } else {
 //        Serial.println("Nu mai e conectat la net");
@@ -196,7 +198,7 @@ void loop() {
       }
 }
 
-String uploadToThingSpeak(float CO_level, float NH3_level, float NO2_level,
+String uploadToThingSpeak(float CO_level, float NH3_level, float humidity,
                               float temp, float p25, float p10, float VOC_level, float CO2_level) {
            
     ThingSpeak.setField(1, temp);
@@ -205,7 +207,7 @@ String uploadToThingSpeak(float CO_level, float NH3_level, float NO2_level,
     ThingSpeak.setField(4, p10);
     ThingSpeak.setField(5, CO2_level);
     ThingSpeak.setField(6, VOC_level);
-    ThingSpeak.setField(7, NO2_level);
+    ThingSpeak.setField(7, humidity);
     ThingSpeak.setField(8, NH3_level);
     
     ThingSpeak.writeFields(channelNumber, apiKey);
