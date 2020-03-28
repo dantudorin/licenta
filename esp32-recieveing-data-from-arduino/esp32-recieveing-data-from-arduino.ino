@@ -219,39 +219,3 @@ String uploadToThingSpeak(float CO_level, float NH3_level, float NO2_level,
         return "couldn't update data to the server";  
       }                              
 }
-
-
-//------------TEST CONNECTION TO THINGSPEAK---------------------- 
-//
-//#include <ThingSpeak.h>
-//#include <WiFi.h>
-//
-//const char *ssid = "Ap6";
-//const char *pwd = "ceparola?";
-//const char * apiKey = "6BMM7OIENQ8EUPMU";
-//const long channelNumber = 1013688;
-//
-//WiFiClient client;
-//void setup() {
-//    Serial.begin(9600);
-//    
-//    WiFi.mode(WIFI_STA);
-//    WiFi.begin(ssid, pwd);
-//    
-//    Serial.println("Connected to internet");
-//    
-//    ThingSpeak.begin(client);
-//  }
-//
-//void loop() {
-//    
-//    ThingSpeak.setField(1, 23);
-//    int x = ThingSpeak.writeFields(channelNumber, apiKey);
-//
-//    if(x == 200) {
-//        Serial.println("Channel updated successfuly");
-//      }else {
-//        Serial.println("Problem updating the channel");    
-//      }
-//     delay(20000);
-//  }
